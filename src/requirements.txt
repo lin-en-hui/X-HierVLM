@@ -1,0 +1,25 @@
+# Core deep learning
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Transformers ecosystem
+transformers>=4.35.0
+peft>=0.7.0
+accelerate>=0.25.0
+
+# Vision-Language Models
+open_clip_torch>=2.20.0
+
+# Data processing
+pandas>=1.5.0
+numpy>=1.24.0
+
+# Image I/O
+pillow>=9.0.0
+
+# Utilities
+tqdm>=4.65.0
+pyyaml>=6.0
+
+# Optional: Flash Attention (for faster inference)
+# flash-attn>=2.0.0  # Uncomment if flash-attn is available
