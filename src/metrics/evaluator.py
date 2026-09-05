@@ -4,7 +4,7 @@ Comprehensive hierarchical evaluation metrics.
 Implements all metrics defined in the paper:
 - Acc_L1 ~ Acc_L6: Per-level top-1 accuracy (Eq. 9)
 - EPR: Error Propagation Rate (Eq. 10)
-- HC: Hierarchical Consistency Accuracy (Eq. 11)
+- HCA: Hierarchical Consistency Accuracy (Eq. 11)
 - POR: Point-Overlap Ratio (Eq. 12)
 - S-POR: Strict Point-Overlap Ratio (Eq. 13)
 - TOR: Top-Overlap Ratio (Eq. 14)
@@ -34,13 +34,13 @@ def calculate_all_metrics(
             - final_top1_path: list[str] of length 6 (L1~L6)
             - ground_truth: dict with keys 'L1'~'L6' (or will be extracted)
             - layer_evidence_log: list of evidence dicts with 'Matching_Classes' and 'Final_Weight'
-            - topk_segments: dict with 'k1_segments' (for HC)
+            - topk_segments: dict with 'k1_segments' (for HCA)
             - ranked_paths: list of (path, score, extra) for margin-based EPC fallback
         epc_perturb_ratio: Fraction of weakest evidence to remove for EPC (default 0.3).
         epc_num_trials: Number of perturbation trials for EPC (default 1).
 
     Returns:
-        dict: Metric names (e.g., "Acc_L1", "HC", "EPR", "POR", "S-POR", "TOR", "ECC", "EPC")
+        dict: Metric names (e.g., "Acc_L1", "HCA", "EPR", "POR", "S-POR", "TOR", "ECC", "EPC")
               with values as percentages (0~100).
     """
     N = len(results)
@@ -53,7 +53,7 @@ def calculate_all_metrics(
     # Accumulators
     # --------------------------------------------------------------------
     acc = {f"L{i}": 0 for i in range(1, 7)}
-    hc_count = 0
+    hca_count = 0
     epr_num = 0
     epr_den = 0
     por_sum = 0.0
@@ -93,9 +93,9 @@ def calculate_all_metrics(
             else:
                 correct_flags.append(0)
 
-        # ---------- HC (Eq. 11): full path correct ----------
+        # ---------- HCA (Eq. 11): full path correct ----------
         if all(correct_flags):
-            hc_count += 1
+            hca_count += 1
 
         # ---------- EPR (Eq. 10): L6 wrong AND (L1 or L2 wrong) ----------
         if not correct_flags[5]:  # L6 wrong
@@ -150,7 +150,7 @@ def calculate_all_metrics(
     for lv in levels:
         metrics[f"Acc_{lv}"] = (acc[lv] / N) * 100.0
 
-    metrics["HC"] = (hc_count / N) * 100.0
+    metrics["HCA"] = (hca_count / N) * 100.0
 
     # EPR: if denominator is 0, set to 0 (no errors to propagate)
     metrics["EPR"] = (epr_num / epr_den * 100.0) if epr_den > 0 else 0.0
@@ -254,8 +254,8 @@ def print_metrics_table(metrics: Dict[str, float], title: str = "Evaluation Resu
     print(val_row)
 
     # Consistency metrics
-    print("\n| HC (%) | EPR (%) | POR (%) | S-POR (%) | TOR (%) | ECC (%) | EPC (%) |")
-    print(f"| {metrics.get('HC', 0):.2f}   | {metrics.get('EPR', 0):.2f}   | {metrics.get('POR', 0):.2f}   | {metrics.get('S-POR', 0):.2f}     | {metrics.get('TOR', 0):.2f}   | {metrics.get('ECC', 0):.2f}   | {metrics.get('EPC', 0):.2f}   |")
+    print("\n| HCA (%) | EPR (%) | POR (%) | S-POR (%) | TOR (%) | ECC (%) | EPC (%) |")
+    print(f"| {metrics.get('HCA', 0):.2f}   | {metrics.get('EPR', 0):.2f}   | {metrics.get('POR', 0):.2f}   | {metrics.get('S-POR', 0):.2f}     | {metrics.get('TOR', 0):.2f}   | {metrics.get('ECC', 0):.2f}   | {metrics.get('EPC', 0):.2f}   |")
 
     print("=" * 90 + "\n")
 
