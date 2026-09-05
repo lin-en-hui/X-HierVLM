@@ -120,7 +120,7 @@ class DualTrackArbiter:
             - whitebox: {species, score, confidence, path}
             - final_top1_path: list[str] (full L1~L6 path for metrics)
             - layer_evidence_log: list[dict] (for ECC/EPC)
-            - topk_segments: dict (for HC/POR)
+            - topk_segments: dict (for HCA/POR)
             - ground_truth: dict (if provided externally, merged later)
         """
         if species_list is None:
@@ -189,7 +189,7 @@ class DualTrackArbiter:
             full_path = find_path_for_species(final_species, tree)
             if full_path is not None and len(full_path) >= 6:
                 wb_result["final_top1_path"] = full_path[:6]
-                # Also update segments for HC (assume fully connected if BioCLIP wins)
+                # Also update segments for HCA (assume fully connected if BioCLIP wins)
                 wb_result["topk_segments"] = {
                     "k1_segments": [full_path[:6]],
                     "k3_segments": [full_path[:6]],
