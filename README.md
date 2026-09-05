@@ -23,7 +23,7 @@ X-HierVLM is a dual-track framework for fine-grained visual categorization that 
 ### Key Features
 
 - 🧩 **Hierarchical reasoning** with structured visual attributes (L1~L6)
-- 📊 **Comprehensive metrics**: Acc_L1~L6, HCA, EPR, POR, S-POR, TOR, ECC, EPC
+- 📊 **Comprehensive metrics**: Acc_L1~L6, HCA, POR, S-POR, TOR, ECC, EPC
 - 🔍 **Interpretable decisions** with explicit evidence chains
 - ⚖️ **Dual-track arbitration** balancing accuracy and transparency
 - 🚀 **Batch inference** support for CSV and directory modes
